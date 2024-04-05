@@ -1,10 +1,11 @@
-from fastapi import FastAPI, Response, Path
+from fastapi import FastAPI, Response, Path, File, UploadFile
 from fastapi.responses import JSONResponse
 import uvicorn
 from fastapi.responses import JSONResponse
 from models import *
 from Modules import *
 import json
+import os
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
 from Analyse import upload_balance_sheet, pie_data
@@ -132,9 +133,19 @@ async def delete_transaction(transID, UserID: str=Path(...)):
     await Transactions.update_one({"UserId":UserID},{"$unset":{f"transactions.{transID}":""}})
     await Transactions.update_one({"UserId":UserID},{"$pull":{f"transactions.{transID}":{"$exists":False}}})
     
-@app.post('/{UserID}/goal_setter')
+@app.post('/{UserID}/goal_setter/')
 async def goal_setter(goal: Goal,UserID:str=Path(...)):
     await insert_goal(UserID,goal=goal)
+    
+@app.post('/{UserID}/upload_file/')
+async def upload_file(UserID: str=Path(...), file: UploadFile=File(...)):
+    DIR = "Bank_Statements"
+    new_name = f"{UserID}.csv"
+    file_path = os.path.join(DIR, new_name)
+    with open(file_path, "wb") as f:
+        contents = await file.read()
+        f.write(contents)
+    return Response(status_code=200)
 
 @app.get('/{UserID}/expense_pie_chart')
 async def expense_pie_chart(UserID:str=Path(...)):
