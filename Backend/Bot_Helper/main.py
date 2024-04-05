@@ -9,7 +9,7 @@ def get_info(Transactions):
     response = model.generate_content(f'''{Transactions}
                                       You are supposed to take the +ve values as incomes and -ve values as expenses
                                       
-                                      Answer in 5-10 points
+                                      Answer in 5 points exactly
                                       You are acting as a financial advisor on my expense Tracker app, I 
                                       be providing you with the transaction details.
                                       You are required to analyse them and suggest them tips on where they can

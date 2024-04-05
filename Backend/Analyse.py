@@ -147,3 +147,12 @@ async def pie_data(UserID):
     for x,y in data_data.items():
         data.append({x:-y})
     return data
+
+async def get_recent_trans(UserID):
+    user_details = await Transactions.find_one({"UserId":UserID})
+    transactions =  user_details.get("transactions")
+    rt = [transaction for transaction in transactions.values()]
+    rt.sort(key=lambda x:x.get("Date"), reverse=True)
+    return rt[:31]
+
+asyncio.run(get_recent_trans("m6UgaO0i"))
