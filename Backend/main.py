@@ -1,13 +1,14 @@
 from fastapi import FastAPI, Response, Path, File, UploadFile
 from fastapi.responses import JSONResponse
 import uvicorn
+from fastapi.responses import JSONResponse
 from models import *
 from Modules import *
 import json
 import os
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
-from Analyse import upload_balance_sheet
+from Analyse import upload_balance_sheet, pie_data
 
 app = FastAPI()
 origins = [
@@ -146,5 +147,10 @@ async def upload_file(UserID: str=Path(...), file: UploadFile=File(...)):
         f.write(contents)
     return Response(status_code=200)
 
+@app.get('/{UserID}/expense_pie_chart')
+async def expense_pie_chart(UserID:str=Path(...)):
+    data = await pie_data(UserID)
+    return JSONResponse(content=data)
+    
 if __name__ == "__main__":
         uvicorn.run(app, host="0.0.0.0", port=8000)

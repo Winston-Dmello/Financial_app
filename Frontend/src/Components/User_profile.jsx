@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
+import "../assets/login.css";
 
 const UserProfile = () => {
   const [userProfile, setUserProfile] = useState({});
@@ -70,82 +71,91 @@ const UserProfile = () => {
 
   return (
     <div>
-      <h2>User Profile</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="name">Name:</label>
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value={formData.name}
-            onChange={handleInputChange}
-            placeholder="Enter your name"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="ph_no">Phone Number:</label>
-          <input
-            type="text"
-            id="ph_no"
-            name="ph_no"
-            value={formData.ph_no}
-            onChange={handleInputChange}
-            placeholder="Enter your phone number"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="bank">Bank Name:</label>
-          <input
-            type="text"
-            id="bank"
-            name="bank"
-            value={formData.bank}
-            onChange={handleInputChange}
-            placeholder="Enter your bank name"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="ifsc">IFSC Code:</label>
-          <input
-            type="text"
-            id="ifsc"
-            name="ifsc"
-            value={formData.ifsc}
-            onChange={handleInputChange}
-            placeholder="Enter your IFSC code"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="balance">Balance:</label>
-          <input
-            type="text"
-            id="balance"
-            name="balance"
-            value={formData.balance}
-            onChange={handleInputChange}
-            placeholder="Enter your balance"
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="age">Age:</label>
-          <input
-            type="text"
-            id="age"
-            name="age"
-            value={formData.age}
-            onChange={handleInputChange}
-            placeholder="Enter your age"
-            required
-          />
-        </div>
-        <button type="submit">Save</button>
-      </form>
+      <header>
+        <h1>Expense Tracker</h1>
+      </header>
+      <main>
+        <section class="container">
+          <div class="profile">
+            <h2>User Profile</h2>
+            <form onSubmit={handleSubmit}>
+              <div>
+                <label htmlFor="name">Name:</label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="Enter your name"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="ph_no">Phone Number:</label>
+                <input
+                  type="text"
+                  id="ph_no"
+                  name="ph_no"
+                  value={formData.ph_no}
+                  onChange={handleInputChange}
+                  placeholder="Enter your phone number"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="bank">Bank Name:</label>
+                <input
+                  type="text"
+                  id="bank"
+                  name="bank"
+                  value={formData.bank}
+                  onChange={handleInputChange}
+                  placeholder="Enter your bank name"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="ifsc">IFSC Code:</label>
+                <input
+                  type="text"
+                  id="ifsc"
+                  name="ifsc"
+                  value={formData.ifsc}
+                  onChange={handleInputChange}
+                  placeholder="Enter your IFSC code"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="balance">Balance:</label>
+                <input
+                  type="text"
+                  id="balance"
+                  name="balance"
+                  value={formData.balance}
+                  onChange={handleInputChange}
+                  placeholder="Enter your balance"
+                  required
+                />
+              </div>
+              <div>
+                <label htmlFor="age">Age:</label>
+                <input
+                  type="text"
+                  id="age"
+                  name="age"
+                  value={formData.age}
+                  onChange={handleInputChange}
+                  placeholder="Enter your age"
+                  required
+                />
+              </div>
+              <button type="submit">Save</button>
+            </form>
+          </div>
+        </section>
+      </main>
       {alert && (
         <div>
           <p>{alert}</p>

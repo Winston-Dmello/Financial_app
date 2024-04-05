@@ -1,0 +1,76 @@
+body {
+    font-family: sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #141414; /* Dark base color */
+    background: -webkit-linear-gradient(to right, #141414 0%, #000000 100%); /* Black to darker black gradient */
+    background: linear-gradient(to right, #141414 0%, #000000 100%); /* Black to darker black gradient for wider browser support */
+    color: #f5f5f5; /* Whitesmoke text color */
+    display: flex; /* Make the body a flex container for vertical centering */
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+    min-height: 100vh; /* Ensure body fills viewport height for centering */
+}
+
+header {
+    background-color: transparent; /* Transparent header to blend with background */
+    padding: 20px;
+    text-align: center;
+    color: #fff; /* White text for better contrast */
+}
+
+header h1 {
+    margin: 0;
+}
+
+main {
+    padding: 20px;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px; /* Adjust max-width as needed */
+    padding: 20px;
+    border-radius: 4px; /* Rounded corners for a softer look */
+    background-color: #1e1e1e; /* Slightly darker shade of black for content section */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2); /* Slight shadow for depth */
+}
+
+.profile {
+    width: 100%; /* Take up full width */
+}
+
+h2 {
+    margin-bottom: 10px;
+    color: #f5f5f5; /* Whitesmoke for headings */
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+label {
+    display: block; /* Display labels on their own line */
+    margin-bottom: 5px;
+    color: #f5f5f5; /* Whitesmoke for labels */
+}
+
+input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 20px;
+    background-color: #2e7d32; /* Dark green for buttons */
+    color: #fff; /* White text for buttons */
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}

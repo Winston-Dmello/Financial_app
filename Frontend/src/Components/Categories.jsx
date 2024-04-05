@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-
+import "../assets/categories.css";
 const Categories = () => {
   const [category, setCategory] = useState("");
   const [priority, setPriority] = useState(1);
@@ -64,13 +64,19 @@ const Categories = () => {
     const updatedCategory = categoriesList[index]?.category;
     const updatedPriority = categoriesList[index]?.priority;
     try {
-      const response = await fetch(`http://localhost:8000/categories/${categoryIdToEdit}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ category: updatedCategory, priority: updatedPriority }),
-      });
+      const response = await fetch(
+        `http://localhost:8000/categories/${categoryIdToEdit}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            category: updatedCategory,
+            priority: updatedPriority,
+          }),
+        }
+      );
       if (response.ok) {
         console.log("Category edited successfully");
         fetchCategories();
@@ -88,9 +94,12 @@ const Categories = () => {
   const handleDeleteCategory = async (index) => {
     const categoryIdToDelete = categoriesList[index]?.id;
     try {
-      const response = await fetch(`http://localhost:8000/categories/${categoryIdToDelete}`, {
-        method: "DELETE",
-      });
+      const response = await fetch(
+        `http://localhost:8000/categories/${categoryIdToDelete}`,
+        {
+          method: "DELETE",
+        }
+      );
       if (response.ok) {
         console.log("Category deleted successfully");
         fetchCategories();
@@ -108,7 +117,7 @@ const Categories = () => {
   return (
     <div>
       {alertMessage && <div className="alert">{alertMessage}</div>}
-      <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit}>
         <div>
           <label htmlFor="category">Category:</label>
           <input
@@ -160,7 +169,9 @@ const Categories = () => {
                 max={5}
               />
               <button onClick={() => handleEditCategory(index)}>Edit</button>
-              <button onClick={() => handleDeleteCategory(index)}>Delete</button>
+              <button onClick={() => handleDeleteCategory(index)}>
+                Delete
+              </button>
             </li>
           ))}
         </ul>
