@@ -5,7 +5,6 @@ class User(BaseModel):
 
 class UserProfile(BaseModel):
     name: str
-    userId: str
     ph_no: str
     bank: str
     ifsc: str

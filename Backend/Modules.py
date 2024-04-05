@@ -28,7 +28,8 @@ async def create_user_profile(UserID, user: UserProfile):
         "Age":user.age,
         "Ph_no":user.ph_no,
         "Bank":user.bank,
-        "Ifsc":user.ifsc
+        "Ifsc":user.ifsc,
+        "Balance":user.balance
     })
 
 
