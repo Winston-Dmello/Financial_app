@@ -3,7 +3,9 @@ import uvicorn
 from models import *
 from Modules import *
 import json
+from database import Transactions
 from fastapi.middleware.cors import CORSMiddleware
+from Analyse import upload_balance_sheet
 
 app = FastAPI()
 origins = [
@@ -44,15 +46,55 @@ async def login_user(user:User):
         else:
             return Response(status_code=401) #password doesn't match
             
-@app.post('/{UserID}/profile')
+@app.post('/{UserID}/profile/')
 async def user_profile(user:UserProfile,UserID: str=Path(...)):
     await create_user_profile(UserID, user=user)
+    await Categories.insert_one({"UserId":UserID, "categories":{}})
+    await Transactions.insert_one({"UserId":UserID, "transactions":{}})
     return Response(status_code=200)
 
-@app.post('/{UserID}/edit_profile')
+@app.post('/{UserID}/edit_profile/')
 async def edit_profile(user:UserProfile, UserID: str=Path(...)):
     await UserProfiles.delete_one({"UserId":UserID})
     await create_user_profile(UserID, user=user)
+    return Response(status_code=200)
+
+#categ: {"categ":"some", "priority":"5"}
+@app.post('/{UserID}/add_category/')
+async def add_category(categ:Category,UserID: str=Path(...)):
+    '''
+    l.append({categ.category:categ.priority})
+    await Categories.update_one({"UserId":UserID},{"$set":{"categories":l}})'''
+    categ_holder = await Categories.find_one({"UserId":UserID})
+    l = categ_holder['categories']
+    if categ.category not in l:
+        l[categ.category] = categ.priority
+        await Categories.update_one({"UserId":UserID},{"$set":{"categories":l}})
+    return Response(status_code=200)
+
+@app.post('/{UserID}/update_category')
+async def update_category(categ: Category, UserID: str=Path(...)):
+    categ_holder = await Categories.find_one({"UserId":UserID})
+    l = categ_holder['categories']
+    if categ.category not in l:
+        return Response(status_code=410) #category doesn't exist!
+    l[categ.category] = categ.priority
+    await Categories.update_one({"UserId":UserID},{"$set":{"categories":l}})
+    return Response(status_code=200)
+
+@app.post('/{UserID}/delete_category/')
+async def delete_category(categ:str, UserID: str=Path(...)):
+    categ_holder = await Categories.find_one({"UserId":UserID})
+    l = categ_holder['categories']
+    if categ not in l:
+        return Response(status_code=410) #category doesn't exist
+    del l[categ]
+    await Categories.update_one({"UserId":UserID},{"$set":{"categories":l}})
+    return Response(status_code=200)
+
+@app.get('/Bored/')
+async def simply():
+    await upload_balance_sheet()
     return Response(status_code=200)
 
 if __name__ == "__main__":

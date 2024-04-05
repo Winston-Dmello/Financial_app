@@ -6,7 +6,12 @@ class User(BaseModel):
 class UserProfile(BaseModel):
     name: str
     userId: str
-    ph_no: int
+    ph_no: str
     bank: str
     ifsc: str
+    balance: float
     age: int
+
+class Category(BaseModel):
+    category:str
+    priority:int

@@ -1,5 +1,5 @@
 from models import *
-from database import Users, UserProfiles
+from database import Users, UserProfiles, Categories
 from nanoid import generate
 from passlib.context import CryptContext
 
@@ -29,6 +29,7 @@ async def create_user_profile(UserID, user: UserProfile):
         "Bank":user.bank,
         "Ifsc":user.ifsc
     })
+
 
 def verify_password(password, hashed_password):
      return pwd_context.verify(password, hashed_password)
