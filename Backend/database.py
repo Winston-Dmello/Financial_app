@@ -6,3 +6,5 @@ client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 database = client["Finance"]
 Users = database["Users"]
 UserProfiles = database["UserProfiles"]
+Categories = database["Categories"]
+Transactions = database["Transactions"]
