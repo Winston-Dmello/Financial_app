@@ -1,0 +1,6 @@
+fastapi
+uvicorn
+motor
+uuid
+nanoid
+passlib[bcrypt]
