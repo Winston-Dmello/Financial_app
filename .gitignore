@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 Backend/pyvenv.cfg
 Backend/__pycache__/database.cpython-311.pyc
 Backend/__pycache__/main.cpython-311.pyc
@@ -2951,3 +2952,15 @@ Backend/Scripts/pip3.exe
 Backend/Scripts/python.exe
 Backend/Scripts/pythonw.exe
 Backend/Scripts/uvicorn.exe
+=======
+Backend/__pycache__/database.cpython-312.pyc
+Backend/__pycache__/main.cpython-312.pyc
+Backend/__pycache__/models.cpython-312.pyc
+Backend/__pycache__/Modules.cpython-312.pyc
+Frontend/.eslintrc.cjs
+Frontend/.gitignore
+Frontend/hello.txt
+Frontend/public/vite.svg
+Frontend/vite.config.js
+Frontend/src/assets/react.svg
+>>>>>>> 6fe962e934223944cf2f9f1398a39f5f6d6c2eea
