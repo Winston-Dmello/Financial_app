@@ -2,31 +2,33 @@ import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 
 const EditProfile = () => {
-  const [formData, setFormData] = useState({
-    name: "",
-    ph_no: "",
-    bank: "",
-    ifsc: "",
-    balance: "",
-    age: ""
-  });
-  const { userId } = useParams();
-
+  const [alert, setAlert] = useState("");
+  const [formData, setFormData] = useState({});
+  let userId = localStorage.getItem("UserID");
   useEffect(() => {
     fetchUserProfile(userId);
   }, [userId]);
 
+  useEffect(() => {
+    console.log(formData);
+  }, [formData]);
+
   const fetchUserProfile = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:8000/profile/${userId}`);
+      const response = await fetch(
+        `http://localhost:8000/${userId}/edit_profile`
+      );
       if (response.ok) {
         const userProfileData = await response.json();
         setFormData(userProfileData);
       } else {
-        console.error("Failed to fetch user profile data");
+        console.log("Failed!");
       }
     } catch (error) {
-      console.error("An error occurred while fetching user profile data:", error);
+      console.error(
+        "An error occurred while fetching user profile data:",
+        error
+      );
     }
   };
 
@@ -38,27 +40,29 @@ const EditProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-        const response = await fetch(`http://localhost:8000/profile/${userId}`, {
-          method: "PUT", 
+      const response = await fetch(
+        `http://localhost:8000/${userId}/edit_profile`,
+        {
+          method: "POST",
           headers: {
-            "Content-Type": "application/json", 
+            "Content-Type": "application/json",
           },
           body: JSON.stringify(formData),
-           
-        });
-    
-        if (response.ok) {
-          console.log("Profile updated successfully");
-    
-          window.location.href = `/profile/${userId}`;
-        } else {
-          console.error("Failed to update profile");
         }
-      } catch (error) {
-        console.error("An error occurred while updating profile:", error);
-      }
-    };
+      );
 
+      if (response.ok) {
+        setAlert("Profile updated successfully");
+      } else {
+        setAlert("Failed to update profile");
+      }
+    } catch (error) {
+      console.error("An error occurred while updating profile:", error);
+    }
+  };
+  function Close() {
+    setAlert("");
+  }
   return (
     <div>
       <h2>Edit Profile</h2>
@@ -69,9 +73,10 @@ const EditProfile = () => {
             type="text"
             id="name"
             name="name"
-            value={formData.name}
+            placeholder={formData["Name"]}
             onChange={handleInputChange}
-            placeholder={formData.name}
+            value={formData.name}
+            required
           />
         </div>
         <div>
@@ -80,9 +85,10 @@ const EditProfile = () => {
             type="text"
             id="ph_no"
             name="ph_no"
-            value={formData.ph_no}
+            placeholder={formData["Ph_no"]}
             onChange={handleInputChange}
-            placeholder={formData.ph_no}
+            value={formData.ph_no}
+            required
           />
         </div>
         <div>
@@ -91,9 +97,10 @@ const EditProfile = () => {
             type="text"
             id="bank"
             name="bank"
-            value={formData.bank}
+            placeholder={formData["Bank"]}
             onChange={handleInputChange}
-            placeholder={formData.bank}
+            value={formData.bank}
+            required
           />
         </div>
         <div>
@@ -102,9 +109,10 @@ const EditProfile = () => {
             type="text"
             id="ifsc"
             name="ifsc"
-            value={formData.ifsc}
+            placeholder={formData["Ifsc"]}
             onChange={handleInputChange}
-            placeholder={formData.ifsc}
+            value={formData.ifsc}
+            required
           />
         </div>
         <div>
@@ -113,9 +121,10 @@ const EditProfile = () => {
             type="text"
             id="balance"
             name="balance"
-            value={formData.balance}
+            placeholder={formData["Balance"]}
             onChange={handleInputChange}
-            placeholder={formData.balance}
+            value={formData.balance}
+            required
           />
         </div>
         <div>
@@ -124,13 +133,20 @@ const EditProfile = () => {
             type="text"
             id="age"
             name="age"
-            value={formData.age}
+            placeholder={formData["Age"]}
             onChange={handleInputChange}
-            placeholder={formData.age}
+            value={formData.age}
+            required
           />
         </div>
         <button type="submit">Update</button>
       </form>
+      {alert && (
+        <div>
+          <p>{alert}</p>
+          <button onClick={Close}>Close</button>
+        </div>
+      )}
     </div>
   );
 };

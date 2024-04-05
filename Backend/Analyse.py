@@ -132,5 +132,3 @@ async def analysis(UserID):
     user_data = await Transactions.find_one({'UserId':UserID})
     transactions = user_data.get('transactions', {})
     get_info(transactions)
-    
-asyncio.run(analysis("m6UgaO0i"))

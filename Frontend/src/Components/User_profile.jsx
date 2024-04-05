@@ -3,34 +3,40 @@ import { useParams } from "react-router-dom";
 
 const UserProfile = () => {
   const [userProfile, setUserProfile] = useState({});
+  const [alert, setAlert] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     ph_no: "",
     bank: "",
     ifsc: "",
-    balance: "",
-    age: ""
+    balance: 0,
+    age: 0,
   });
-  const { userId } = useParams();
+  const userId = localStorage.getItem("UserID");
 
+  /*
   useEffect(() => {
     fetchUserProfile(userId);
   }, [userId]);
 
   const fetchUserProfile = async (userId) => {
     try {
-      const response = await fetch(`http://localhost:8000/profile/${userId}`);
+      const response = await fetch(`http://localhost:8000/${userId}/profile/`);
       if (response.ok) {
         const userProfileData = await response.json();
         setUserProfile(userProfileData);
-        setFormData(userProfileData); 
+        setFormData(userProfileData);
       } else {
         console.error("Failed to fetch user profile data");
       }
     } catch (error) {
-      console.error("An error occurred while fetching user profile data:", error);
+      console.error(
+        "An error occurred while fetching user profile data:",
+        error
+      );
     }
   };
+*/
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,22 +46,27 @@ const UserProfile = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:8000/Profile/${userId}`, {
-        method: "PUT",
+      const response = await fetch(`http://localhost:8000/${userId}/profile/`, {
+        method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
       if (response.ok) {
-        console.log("User profile updated successfully");
+        setAlert("User profile updated successfully");
+      } else if (response.status == 412) {
+        setAlert("User profile already exists!");
       } else {
-        console.error("Failed to update user profile");
+        setAlert("Failed to update user profile");
       }
     } catch (error) {
       console.error("An error occurred while updating user profile:", error);
     }
   };
+  function Close() {
+    setAlert("");
+  }
 
   return (
     <div>
@@ -135,9 +146,14 @@ const UserProfile = () => {
         </div>
         <button type="submit">Save</button>
       </form>
+      {alert && (
+        <div>
+          <p>{alert}</p>
+          <button onClick={Close}>Close</button>
+        </div>
+      )}
     </div>
   );
-  
 };
 
 export default UserProfile;

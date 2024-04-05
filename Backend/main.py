@@ -1,4 +1,5 @@
 from fastapi import FastAPI, Response, Path
+from fastapi.responses import JSONResponse
 import uvicorn
 from models import *
 from Modules import *
@@ -39,6 +40,7 @@ async def login_user(user:User):
     else:
         if verify_password(user.password, check['Password']):
             content = {"UserId":check['id'], "Username":check['Username']}
+            print(check['id'])
             await Users.update_one({"id":check['id']},{"$set":{"Status":"Online"}})
             return Response(content=json.dumps(content), status_code=200, headers={
                 'Content-Type':'application/json'
@@ -48,6 +50,9 @@ async def login_user(user:User):
             
 @app.post('/{UserID}/profile/')
 async def user_profile(user:UserProfile,UserID: str=Path(...)):
+    check = await UserProfiles.find_one({"UserId":UserID})
+    if check is not None:
+        return Response(status_code=412) #UserProfile already exists
     await create_user_profile(UserID, user=user)
     await Categories.insert_one({"UserId":UserID, "categories":{}})
     await Transactions.insert_one({"UserId":UserID, "transactions":{}})
@@ -59,7 +64,12 @@ async def edit_profile(user:UserProfile, UserID: str=Path(...)):
     await create_user_profile(UserID, user=user)
     return Response(status_code=200)
 
-#categ: {"categ":"some", "priority":"5"}
+@app.get('/{UserID}/edit_profile/')
+async def give_profile(UserID: str=Path(...)):
+    to_be_returned = await UserProfiles.find_one({"UserId":UserID},{"_id":0})
+    return JSONResponse(content=to_be_returned)
+
+
 @app.post('/{UserID}/add_category/')
 async def add_category(categ:Category,UserID: str=Path(...)):
     '''

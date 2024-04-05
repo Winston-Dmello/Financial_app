@@ -6,3 +6,4 @@ nanoid
 passlib[bcrypt]
 pandas
 numpy
+google.generativeai
