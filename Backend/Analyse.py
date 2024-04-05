@@ -3,6 +3,9 @@ import numpy as np
 import re
 from nanoid import generate
 from database import Transactions
+import asyncio
+from datetime import datetime
+from Bot_Helper.main import get_info
 
 FILE_PATHS = ".\Bank_Statements"
 
@@ -67,3 +70,67 @@ async def upload_balance_sheet(userid=None):
         {"$set": {f"transactions.{generate()}": transaction}}
     )
     print('Successfully Added!')
+    
+async def basic_details(UserID):
+    Total_Amount_Spent: float = 0
+    Total_Amount_Recieved:float = 0
+    Net_Total:float = 0
+    
+    user_transaction_data = await Transactions.find_one({"UserId":UserID})
+    transactions = user_transaction_data['transactions']
+    for transaction in transactions:
+        details = transactions[transaction]
+        if details['amount']>0:
+            Total_Amount_Recieved += details['amount']
+        else:
+            Total_Amount_Spent += (-1*details['amount'])
+    Net_Total = Total_Amount_Recieved-Total_Amount_Spent
+    
+    print(Total_Amount_Spent.__round__(2), Total_Amount_Recieved.__round__(2), Net_Total.__round__(2))
+
+async def monthly_average_details(UserID, year=2024):
+    cal_dict = {}
+    for month in range(1,13):
+        start_date = datetime(year, month, 1)
+        end_date = datetime(year, month + 1, 1) if month < 12 else datetime(year + 1, 1, 1)
+
+        user_data = await Transactions.find_one({"UserId": UserID})
+        transactions = user_data.get("transactions", {})
+        filtered_transactions = [v for v in transactions.values() if start_date <= v["Date"] < end_date]
+        Monthly_Income = 0
+        Monthly_Expense = 0
+        if len(filtered_transactions) > 0:
+            for transaction in filtered_transactions:
+                if transaction['amount'] > 0:
+                    Monthly_Income+=transaction['amount']
+                else:
+                    Monthly_Expense+=(-1*transaction['amount'])
+            cal_dict[month] = [Monthly_Income.__round__(2), Monthly_Expense.__round__(2), (Monthly_Income-Monthly_Expense).__round__(2)]
+    print(cal_dict)
+async def highest_spend(UserID):
+    user_data = await Transactions.find_one({"UserId":UserID})
+    transactions = user_data.get("transactions", {})
+    lowest_amount = 0
+    for transaction in transactions:
+        if transactions[transaction]["amount"] < lowest_amount:
+            lowest_amount = transactions[transaction]['amount']
+            lowest_transaction = transaction
+    print(transactions[lowest_transaction])
+
+async def most_money_sent_to(UserID):
+    user_data = await Transactions.find_one({"UserId":UserID})
+    transactions = user_data.get("transactions", {})
+    sender_dict = {}
+    for transaction in transactions:
+        if transactions[transaction]['particulars'] in sender_dict:
+            sender_dict[transactions[transaction]['particulars']] += transactions[transaction]['amount']
+        else:
+            sender_dict[transactions[transaction]['particulars']] = transactions[transaction]['amount']
+    highest_client = {k: v for k, v in sender_dict.items() if v == min(sender_dict.values())}
+    print(highest_client)
+async def analysis(UserID):
+    user_data = await Transactions.find_one({'UserId':UserID})
+    transactions = user_data.get('transactions', {})
+    get_info(transactions)
+    
+asyncio.run(analysis("m6UgaO0i"))
