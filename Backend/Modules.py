@@ -1,7 +1,8 @@
 from models import *
-from database import Users, UserProfiles, Categories
+from database import Users, UserProfiles, Goals
 from nanoid import generate
 from passlib.context import CryptContext
+from datetime import datetime
 
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
@@ -33,3 +34,21 @@ async def create_user_profile(UserID, user: UserProfile):
 
 def verify_password(password, hashed_password):
      return pwd_context.verify(password, hashed_password)
+ 
+def transaction_maker(trans: Transaction):
+    transaction = {
+            "Date": datetime.strptime(trans.Date, '%d-%m-%Y'),
+            "particulars":trans.Particulars,
+            "amount": trans.Amount,
+            "type": trans.Type,
+            "Category":trans.Category,
+            "notes":trans.Notes
+    }
+    return transaction
+
+async def insert_goal(UserID,goal: Goal):
+    await Goals.insert_one({
+        "UserId":UserID,
+        "GoalAmount": goal.goalAmount,
+        "MonthsLeft":goal.monthsLeft
+    })

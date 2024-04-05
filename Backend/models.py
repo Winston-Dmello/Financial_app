@@ -15,3 +15,16 @@ class UserProfile(BaseModel):
 class Category(BaseModel):
     category:str
     priority:int
+
+class Transaction(BaseModel):
+    Date: str
+    Particulars: str
+    Amount: float
+    Type: str
+    Category: str
+    Notes: str
+
+class Goal(BaseModel):
+    goalAmount: float
+    monthsLeft: int
+    
