@@ -92,10 +92,38 @@ async def delete_category(categ:str, UserID: str=Path(...)):
     await Categories.update_one({"UserId":UserID},{"$set":{"categories":l}})
     return Response(status_code=200)
 
-@app.get('/Bored/')
-async def simply():
-    await upload_balance_sheet()
+@app.post('/{UserID}/Bored/')
+async def simply(UserID: str=Path(...)):
+    await upload_balance_sheet(UserID)
     return Response(status_code=200)
+
+@app.post('/{UserID}/add_transaction/')
+async def add_transaction(trans: Transaction, UserID: str=Path(...)):
+    transaction = transaction_maker(trans=trans)
+    await Transactions.update_one(
+        {"UserId": UserID},
+        {"$set": {f"transactions.{generate()}": transaction}}
+    )
+
+@app.post('/{UserID}/update_transaction/')
+async def update_transaction(transID, trans: Transaction, UserID: str=Path(...)):
+    transact = await Transactions.find_one({"UserId":UserID})
+    if transID not in transact['transactions']:
+        return Response(status_code=411) #transaction doesn't exist
+    transaction = transaction_maker(trans=trans)
+    await Transactions.update_one({"UserId":UserID},{"$set":{f"transactions.{transID}":transaction}})
+
+@app.post('/{UserID}/delete_transaction/')
+async def delete_transaction(transID, UserID: str=Path(...)):
+    transact = await Transactions.find_one({"UserId":UserID})
+    if transID not in transact['transactions']:
+        return Response(status_code=411) #transaction doesn't exist
+    await Transactions.update_one({"UserId":UserID},{"$unset":{f"transactions.{transID}":""}})
+    await Transactions.update_one({"UserId":UserID},{"$pull":{f"transactions.{transID}":{"$exists":False}}})
+    
+@app.post('/{UserID}/goal_setter')
+async def goal_setter(goal: Goal,UserID:str=Path(...)):
+    await insert_goal(UserID,goal=goal)
 
 if __name__ == "__main__":
         uvicorn.run(app, host="0.0.0.0", port=8000)
