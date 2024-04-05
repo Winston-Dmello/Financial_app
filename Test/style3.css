@@ -79,3 +79,20 @@ th, td {
     border-radius: 5px;
     cursor: pointer;
 }
+
+.custom-file-upload {
+    display: inline-block;
+    background-color: green;
+    color: white;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.custom-file-upload:hover {
+    background-color: darkgreen;
+}
+
+.button-text {
+    pointer-events: none; /* Prevent text from being selectable */
+}

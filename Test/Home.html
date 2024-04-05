@@ -23,7 +23,12 @@
                     <thead>
                         <tr>
                             <th>SL No</th>
-                            <th>Transaction Name</th>
+                            <th>Date</th>
+                            <th>Particulars</th>
+                            <th>Amount</th>
+                            <th>Category</th>
+                            <th>Type</th>
+                            <th>Notes</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
@@ -31,19 +36,12 @@
                     <tbody>
                         <tr>
                             <td>1</td>
-                            <td>Transaction 1</td>
-                            <td><button>Edit</button></td>
-                            <td><button>Delete</button></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Transaction 2</td>
-                            <td><button>Edit</button></td>
-                            <td><button>Delete</button></td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Transaction 3</td>
+                            <td>22-03-2024</td>
+                            <td>SATYUM CHATURVEDI</td>
+                            <td>1000.00</td>
+                            <td>Food & Beverage</td>
+                            <td>UPI</td>
+                            <td>Satty Paid me For Food.</td>
                             <td><button>Edit</button></td>
                             <td><button>Delete</button></td>
                         </tr>
@@ -51,7 +49,10 @@
                 </table>
             </div>
             <div class="buttons">
-                <button class="upload-btn">Upload</button>
+                <label for="file-upload" class="custom-file-upload">
+                    <span class="button-text">Upload</span>
+                </label>
+                <input id="file-upload" type="file" style="display: none;">                
                 <button class="add-btn">Add</button>
             </div>
         </div>
