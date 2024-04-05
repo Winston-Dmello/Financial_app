@@ -1,6 +1,8 @@
 import pandas as pd
 import numpy as np
 import re
+from nanoid import generate
+from ..Backend.database import Transactions
 
 FILE_PATHS = ".\Bank_Statements"
 
@@ -41,20 +43,27 @@ def get_table():
         elif col.lower() in ['bal', "balance", 'remaining balance', 'rem bal', 'remaining bal']:
             df. rename(columns= {col: "balance"},inplace=True)
     df.replace(r'^\s*$', np.nan, regex=True, inplace=True)
+    df['Date'] = pd.to_datetime(df['Date'], format='%d-%m-%Y')
     df['credit'] = df['credit'].str.strip().astype(float)
     df['debit'] = df['debit'].str.strip().astype(float)
     df['type'] = df['particulars'].str.startswith('UPI').map({True: "UPI", False:"Non-UPI"})
     df['amount'] = df.apply(lambda row: row['credit'] if pd.notnull(row['credit']) else -row['debit'] if pd.notnull(row['debit']) else pd.NA, axis=1)
     df['particulars'] = df['particulars'].apply(extract_part)
     return df
-df = get_table()
 
-expenses = df.dropna(subset=['debit']).drop(columns=['credit'])
-incomes = df.dropna(subset=['credit']).drop(columns=['debit'])
-
-print("Table: ")
-print(df)
-
-print("Expenses:", sum(expenses['debit']))
-print("Income:", sum(incomes['credit']))
-print('Total:', sum(df['amount']).__round__())
+def upload_balance_sheet(userid=None):
+    df = get_table()
+    for index, row in df.iterrows():
+        transaction = {
+            "Date": row['Date'].to_pydatetime(),
+            "particulars": row['particulars'],
+            "amount": row['amount'],
+            "type": row['type'],
+            "Category": "",
+            "notes": ""
+        }
+        Transactions.update_one(
+        {"UserId": ""},
+        {"$push": {"transactions": {generate(): transaction}}}
+    )
+    print('Successfully Added!')
