@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 import re
 from nanoid import generate
-from ..Backend.database import Transactions
+from database import Transactions
 
 FILE_PATHS = ".\Bank_Statements"
 
@@ -51,7 +51,7 @@ def get_table():
     df['particulars'] = df['particulars'].apply(extract_part)
     return df
 
-def upload_balance_sheet(userid=None):
+async def upload_balance_sheet(userid=None):
     df = get_table()
     for index, row in df.iterrows():
         transaction = {
@@ -62,8 +62,8 @@ def upload_balance_sheet(userid=None):
             "Category": "",
             "notes": ""
         }
-        Transactions.update_one(
-        {"UserId": ""},
-        {"$push": {"transactions": {generate(): transaction}}}
+        await Transactions.update_one(
+        {"UserId": "m6UgaO0i"},
+        {"$set": {f"transactions.{generate()}": transaction}}
     )
     print('Successfully Added!')

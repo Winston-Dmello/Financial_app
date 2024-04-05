@@ -5,6 +5,7 @@ from Modules import *
 import json
 from database import Transactions
 from fastapi.middleware.cors import CORSMiddleware
+from Analyse import upload_balance_sheet
 
 app = FastAPI()
 origins = [
@@ -91,7 +92,10 @@ async def delete_category(categ:str, UserID: str=Path(...)):
     await Categories.update_one({"UserId":UserID},{"$set":{"categories":l}})
     return Response(status_code=200)
 
-
+@app.get('/Bored/')
+async def simply():
+    await upload_balance_sheet()
+    return Response(status_code=200)
 
 if __name__ == "__main__":
         uvicorn.run(app, host="0.0.0.0", port=8000)
