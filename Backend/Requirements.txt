@@ -4,3 +4,5 @@ motor
 uuid
 nanoid
 passlib[bcrypt]
+pandas
+numpy
