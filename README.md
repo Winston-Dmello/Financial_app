@@ -1,3 +1,3 @@
 # Financial_app
 
-Expense Tracker and Stocks Suggester
+Expense Tracker and Bank Statement Analyser
