@@ -132,3 +132,18 @@ async def analysis(UserID):
     user_data = await Transactions.find_one({'UserId':UserID})
     transactions = user_data.get('transactions', {})
     get_info(transactions)
+
+async def pie_data(UserID):
+    data = []
+    data_data = {}
+    user_data = await Transactions.find_one({'UserId': UserID})
+    transactions = user_data.get('transactions', {})
+    for transaction in transactions.values():
+        if transaction['amount']<0:
+            if transaction['particulars'] in data_data:
+                data_data[transaction['particulars']] += transaction['amount']
+            else:
+                data_data[transaction['particulars']] = transaction['amount']
+    for x,y in data_data.items():
+        data.append({x:-y})
+    return data

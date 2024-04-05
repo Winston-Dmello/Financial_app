@@ -1,12 +1,13 @@
 from fastapi import FastAPI, Response, Path
 from fastapi.responses import JSONResponse
 import uvicorn
+from fastapi.responses import JSONResponse
 from models import *
 from Modules import *
 import json
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
-from Analyse import upload_balance_sheet
+from Analyse import upload_balance_sheet, pie_data
 
 app = FastAPI()
 origins = [
@@ -135,5 +136,10 @@ async def delete_transaction(transID, UserID: str=Path(...)):
 async def goal_setter(goal: Goal,UserID:str=Path(...)):
     await insert_goal(UserID,goal=goal)
 
+@app.get('/{UserID}/expense_pie_chart')
+async def expense_pie_chart(UserID:str=Path(...)):
+    data = await pie_data(UserID)
+    return JSONResponse(content=data)
+    
 if __name__ == "__main__":
         uvicorn.run(app, host="0.0.0.0", port=8000)
