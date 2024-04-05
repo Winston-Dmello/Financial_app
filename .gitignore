@@ -18882,8 +18882,6 @@ Frontend/node_modules/yocto-queue/index.js
 Frontend/node_modules/yocto-queue/license
 Frontend/node_modules/yocto-queue/package.json
 Frontend/node_modules/yocto-queue/readme.md
-Frontend/src/App.jsx
-Backend/Bot_Helper/main.py
 env/Lib/site-packages/google_generativeai-0.4.1-py3.11-nspkg.pth
 env/Lib/site-packages/zope.interface-6.2-py3.11-nspkg.pth
 env/Lib/site-packages/cachetools/__init__.py

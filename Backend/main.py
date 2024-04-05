@@ -3,7 +3,7 @@ import uvicorn
 from models import *
 from Modules import *
 import json
-from database import Transactions
+from database import *
 from fastapi.middleware.cors import CORSMiddleware
 from Analyse import upload_balance_sheet
 
