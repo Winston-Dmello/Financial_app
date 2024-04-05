@@ -39,7 +39,7 @@ const EditProfile = () => {
     e.preventDefault();
     try {
         const response = await fetch(`http://localhost:8000/profile/${userId}`, {
-          method: "PUT", 
+          method: "POST", 
           headers: {
             "Content-Type": "application/json", 
           },

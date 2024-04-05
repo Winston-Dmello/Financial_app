@@ -8,6 +8,7 @@ import About from './Components/About';
 import UserProfile from './Components/User_profile';
 import EditProfile from './Components/Edit_Profile';
 import Categories from './Components/Categories';
+import Analysis from './Components/Analysis';
 function App() {
 
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/profile" element={<UserProfile/> }/>
         <Route path="/edit_profile" element={<EditProfile/> }/>
         <Route path="/categories" element={<Categories/> }/>
+        <Route path="/analysis" element={<Analysis/> }/>
       </Routes>
     </>
   )
