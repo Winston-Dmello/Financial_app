@@ -156,10 +156,10 @@ async def expense_pie_chart(UserID:str=Path(...)):
 
 @app.get('/{UserID}/Expert_Opinion')
 async def expert_opinion(UserID:str=Path(...)):
-    user_details = Transactions.find_one({"UserId":UserID})
+    user_details = await Transactions.find_one({"UserId":UserID})
     transactions = user_details['transactions']
-    data = await get_info(transactions.values())
-    return JSONResponse(content=data)
+    data = get_info(transactions.values())
+    return JSONResponse(content=data.text)
     
 if __name__ == "__main__":
         uvicorn.run(app, host="0.0.0.0", port=8000)

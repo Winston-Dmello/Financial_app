@@ -86,7 +86,7 @@ async def basic_details(UserID):
             Total_Amount_Spent += (-1*details['amount'])
     Net_Total = Total_Amount_Recieved-Total_Amount_Spent
     
-    print(Total_Amount_Spent.__round__(2), Total_Amount_Recieved.__round__(2), Net_Total.__round__(2))
+    return (Total_Amount_Spent.__round__(2), Total_Amount_Recieved.__round__(2))
 
 async def monthly_average_details(UserID, year=2024):
     cal_dict = {}
@@ -134,19 +134,33 @@ async def analysis(UserID):
     get_info(transactions)
 
 async def pie_data(UserID):
+    megadata = []
     data = []
     data_data = {}
     user_data = await Transactions.find_one({'UserId': UserID})
     transactions = user_data.get('transactions', {})
     for transaction in transactions.values():
         if transaction['amount']<0:
-            if transaction['particulars'] in data_data:
-                data_data[transaction['particulars']] += transaction['amount']
+            if transaction['type']=='UPI':
+                if transaction['type'] in data_data:
+                    data_data[transaction['type']] += transaction['amount']
+                else:
+                    data_data[transaction['type']] = transaction['amount']
             else:
-                data_data[transaction['particulars']] = transaction['amount']
+                if transaction['type'] in data_data:
+                    data_data[transaction['type']] += transaction['amount']
+                else:
+                    data_data[transaction['type']] = transaction['amount']
     for x,y in data_data.items():
         data.append({x:-y})
-    return data
+    megadata.append(data)
+    j, l = await basic_details(UserID)
+    smaller_data = []
+    smaller_data.append({"Total_Spent":j})
+    smaller_data.append({"Total_Recieved":l})
+    megadata.append(smaller_data)
+    return megadata
+
 
 async def get_recent_trans(UserID):
     user_details = await Transactions.find_one({"UserId":UserID})
