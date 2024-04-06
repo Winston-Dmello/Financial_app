@@ -52,8 +52,8 @@ Follow these instructions to get a copy of the project up and running on your lo
 4. Open your web browser and visit [http://localhost:3000](http://localhost:8000) to access the application.
 
 
-## Acknowledgments
+### Acknowledgements
 
-- Hat tip to anyone whose code was used
-- Inspiration
-- etc.
+1. Winston D'mello
+2. Nanda Kumar K U
+3. Joel Joseph
