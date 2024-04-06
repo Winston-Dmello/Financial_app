@@ -36,14 +36,14 @@ async def create_user_profile(UserID, user: UserProfile):
 def verify_password(password, hashed_password):
      return pwd_context.verify(password, hashed_password)
  
-def transaction_maker(trans: Transaction):
+def transaction_maker(trans):
     transaction = {
-            "Date": datetime.strptime(trans.Date, '%d-%m-%Y'),
-            "particulars":trans.Particulars,
-            "amount": trans.Amount,
-            "type": trans.Type,
-            "Category":trans.Category,
-            "notes":trans.Notes
+            "Date": datetime.strptime(trans["Date"], '%d-%m-%Y'),
+            "particulars":trans["particulars"],
+            "amount": int(trans["amount"]),
+            "type": trans["type"],
+            "Category":trans["Category"],
+            "notes":trans["notes"]
     }
     return transaction
 

@@ -18,4 +18,4 @@ def get_info(Transactions):
                                       the app allows them to visualise the data already, apart from this the app also has a 
                                       goal-setting system. Give your inputs based on the following data
                                       ''')
-    print(response.text)
+    return response

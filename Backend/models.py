@@ -17,11 +17,11 @@ class Category(BaseModel):
 
 class Transaction(BaseModel):
     Date: str
-    Particulars: str
-    Amount: float
-    Type: str
+    particulars: str
+    amount: str
+    type: str
     Category: str
-    Notes: str
+    notes: str
 
 class Goal(BaseModel):
     goalAmount: float

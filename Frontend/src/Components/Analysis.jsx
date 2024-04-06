@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { VictoryPie } from "victory";
-
+const userid = localStorage.getItem("UserID")
 const Analysis = () => {
   const [chartData, setChartData] = useState([]);
+  const [geminidata, setGeminidata] = useState("");
 
   useEffect(() => {
     const fetchData = async (userId = "") => {
@@ -26,7 +27,7 @@ const Analysis = () => {
         console.log("Error fetching data:", error);
       }
     };
-    fetchData("m6UgaO0i");
+    fetchData(userid);
   }, []); // Empty dependency array ensures that the effect runs only once
 
   useEffect(() => {
@@ -42,6 +43,13 @@ const Analysis = () => {
         labelRadius={20}
         style={{ labels: { fill: "white", fontSize: 9, transform: "translate(0%, 0%) rotate(90deg)"} }} // Changed fontSize to 12
       />
+      <div>
+        <h3>Bot Suggestions:</h3><br/><br/>
+        <button>Update Data</button>&nbsp;
+        <p>
+
+        </p>
+      </div>
     </div>
   );
 };

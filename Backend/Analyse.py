@@ -54,7 +54,7 @@ def get_table():
     df['particulars'] = df['particulars'].apply(extract_part)
     return df
 
-async def upload_balance_sheet(userid=None):
+async def upload_balance_sheet(userid):
     df = get_table()
     for index, row in df.iterrows():
         transaction = {
@@ -66,7 +66,7 @@ async def upload_balance_sheet(userid=None):
             "notes": ""
         }
         await Transactions.update_one(
-        {"UserId": "m6UgaO0i"},
+        {"UserId": userid},
         {"$set": {f"transactions.{generate()}": transaction}}
     )
     print('Successfully Added!')
@@ -150,9 +150,17 @@ async def pie_data(UserID):
 
 async def get_recent_trans(UserID):
     user_details = await Transactions.find_one({"UserId":UserID})
-    transactions =  user_details.get("transactions")
-    rt = [transaction for transaction in transactions.values()]
-    rt.sort(key=lambda x:x.get("Date"), reverse=True)
-    return rt[:31]
+    if user_details != None:
+        transactions = user_details.get("transactions")
+        if transactions != None:
+            trs = []
+            for t in transactions:
+                trs.append({t:transactions[t]})
+            return trs[::-1][:31]
 
-asyncio.run(get_recent_trans("m6UgaO0i"))
+def manage_datetime(transactions):
+    if transactions:
+        for t in transactions:
+            for x in t:
+                t[x]['Date'] =  datetime.strftime(t[x]['Date'],"%d-%m-%Y")
+        return transactions

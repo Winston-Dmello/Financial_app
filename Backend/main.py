@@ -8,7 +8,8 @@ import json
 import os
 from database import *
 from fastapi.middleware.cors import CORSMiddleware
-from Analyse import upload_balance_sheet, pie_data
+from Analyse import upload_balance_sheet, pie_data, get_recent_trans, manage_datetime
+from Bot_Helper.main import get_info
 
 app = FastAPI()
 origins = [
@@ -71,7 +72,6 @@ async def give_profile(UserID: str=Path(...)):
     to_be_returned = await UserProfiles.find_one({"UserId":UserID},{"_id":0})
     return JSONResponse(content=to_be_returned)
 
-
 @app.post('/{UserID}/add_category/')
 async def add_category(categ:Category,UserID: str=Path(...)):
     '''
@@ -104,13 +104,14 @@ async def delete_category(categ:str, UserID: str=Path(...)):
     await Categories.update_one({"UserId":UserID},{"$set":{"categories":l}})
     return Response(status_code=200)
 
-@app.post('/{UserID}/Bored/')
-async def simply(UserID: str=Path(...)):
-    await upload_balance_sheet(UserID)
-    return Response(status_code=200)
+@app.get('/{UserID}/get_transactions/')
+async def get_transactions(UserID: str=Path(...)):
+    transactions = manage_datetime(await get_recent_trans(UserID))
+    return JSONResponse(content=transactions)
 
 @app.post('/{UserID}/add_transaction/')
-async def add_transaction(trans: Transaction, UserID: str=Path(...)):
+async def add_transaction(trans, UserID: str=Path(...)):
+    print(trans)
     transaction = transaction_maker(trans=trans)
     await Transactions.update_one(
         {"UserId": UserID},
@@ -145,11 +146,19 @@ async def upload_file(UserID: str=Path(...), file: UploadFile=File(...)):
     with open(file_path, "wb") as f:
         contents = await file.read()
         f.write(contents)
+    await upload_balance_sheet(UserID)
     return Response(status_code=200)
 
 @app.get('/{UserID}/expense_pie_chart')
 async def expense_pie_chart(UserID:str=Path(...)):
     data = await pie_data(UserID)
+    return JSONResponse(content=data)
+
+@app.get('/{UserID}/Expert_Opinion')
+async def expert_opinion(UserID:str=Path(...)):
+    user_details = Transactions.find_one({"UserId":UserID})
+    transactions = user_details['transactions']
+    data = await get_info(transactions.values())
     return JSONResponse(content=data)
     
 if __name__ == "__main__":
