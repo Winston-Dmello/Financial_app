@@ -12,11 +12,8 @@ from Analyse import upload_balance_sheet, pie_data, get_recent_trans, manage_dat
 from Bot_Helper.main import get_info
 
 app = FastAPI()
-origins = [
-    "http://localhost:5173",
-    "mongodb://localhost:27017",
-    "http://192.168.29.40:5173",
-]
+origins = ["https://ideal-parakeet-jvxwrgjqq5xcqv44-5173.app.github.dev"]
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins = origins,
@@ -30,7 +27,9 @@ app.add_middleware(
 async def register_user(user:User):
     check = await search_user_by_username(user.username)
     if check == None: 
-        await create_user(user=user)
+        UserID = await create_user(user=user)   
+        await Categories.insert_one({"UserId":UserID, "categories":{}})
+        await Transactions.insert_one({"UserId":UserID, "transactions":{}})
         return Response(status_code=200)
     else:
         return Response(status_code=409) #User already exists
@@ -57,8 +56,6 @@ async def user_profile(user:UserProfile,UserID: str=Path(...)):
     if check is not None:
         return Response(status_code=412) #UserProfile already exists
     await create_user_profile(UserID, user=user)
-    await Categories.insert_one({"UserId":UserID, "categories":{}})
-    await Transactions.insert_one({"UserId":UserID, "transactions":{}})
     return Response(status_code=200)
 
 @app.post('/{UserID}/edit_profile/')

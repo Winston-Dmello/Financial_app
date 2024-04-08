@@ -20,6 +20,7 @@ async def create_user(user: User):
         "Password":pwd_context.hash(user.password),
         "Status":"Offline"
     })
+    return id
 
 async def create_user_profile(UserID, user: UserProfile):
     await UserProfiles.insert_one({

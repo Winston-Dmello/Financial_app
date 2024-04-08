@@ -7,3 +7,4 @@ passlib[bcrypt]
 pandas
 numpy
 google.generativeai
+python-multipart

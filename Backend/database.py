@@ -1,9 +1,9 @@
 import motor.motor_asyncio
 
-MONGO_DETAILS = "mongodb://localhost:27017"
+MONGO_DETAILS = "mongodb+srv://Winston:Winston2004@fintard.yniryxo.mongodb.net/"
 client = motor.motor_asyncio.AsyncIOMotorClient(MONGO_DETAILS)
 
-database = client["Finance"]
+database = client["Fintard"]
 Users = database["Users"]
 UserProfiles = database["UserProfiles"]
 Categories = database["Categories"]
