@@ -1,4 +1,6 @@
 import UPF from "../../forms/UserProfileForm"
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../../contexts/UserContext";
 
 function UserProfile() {
   const data = {
@@ -9,15 +11,16 @@ function UserProfile() {
     balance: { value: "" },
     age: { value: "" },
   };
+  const navigate = useNavigate();
+  const {userId} = useUser();
 
   async function submitForm(event) {
       event.preventDefault();
       const formElement = document.getElementById("myForm");
       let formData = new FormData(formElement);
       let details = JSON.stringify(Object.fromEntries(formData));
-      let UserID = localStorage.getItem("UserID");
       try {
-        const response = await fetch(`http://localhost:8000/${UserID}/profile`, {
+        const response = await fetch(`http://localhost:8000/${userId}/profile`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -26,6 +29,7 @@ function UserProfile() {
         });
         if (response.status == 200) {
           console.log("You will be redirected to home page!");
+          navigate('/profile-page');
         } else if (response.status == 412) {
           console.log("User Profile already exists!");
         }
