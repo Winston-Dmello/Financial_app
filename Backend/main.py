@@ -12,7 +12,7 @@ from Analyse import upload_balance_sheet, pie_data, get_recent_trans, manage_dat
 from Bot_Helper.main import get_info
 
 app = FastAPI()
-origins = ["https://ideal-parakeet-jvxwrgjqq5xcqv44-5173.app.github.dev"]
+origins = ["http://localhost:5173"]
 
 app.add_middleware(
     CORSMiddleware,
