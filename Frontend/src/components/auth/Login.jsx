@@ -1,8 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthForm from "../forms/AuthForm";
+import { useUser } from "../contexts/UserContext";
 
 export default function Login() {
+
+  const { setUserId } = useUser();
   const [alert, setAlert] = useState("");
   const navigate = useNavigate();
 
@@ -25,8 +28,7 @@ export default function Login() {
         let UserID = data.UserId;
         let Username = data.Username;
         console.log(`UserId: ${UserID} and UserName: ${Username}`);
-        localStorage.setItem("UserID", UserID);
-        localStorage.setItem("Username", Username);
+        setUserId(UserID);
         navigate("/user-profile");
         console.log("Login successful!");
       } else if (response.status == 407) {
