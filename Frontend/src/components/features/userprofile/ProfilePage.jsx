@@ -1,3 +1,8 @@
+/**
+ * Page where users can view their details
+ *  Contains edit profile as well!
+ */
+
 import { useUser } from "../../contexts/UserContext";
 import { useEffect, useState } from "react";
 
@@ -20,7 +25,20 @@ export default function Profile(){
 
     return(
         <>
-            <div>{JSON.stringify(userData, null, 2)}</div>
+            <div>
+                {userData ? (
+                    Object.entries(userData).map(([key, value]) => (
+                        <span key={key}>
+                            <strong>{key}: </strong> {value}
+                            <br />
+                        </span> 
+                    ))
+                ) : (
+                    <p>Loading...</p>
+                )}
+            </div>
+            <br />
+            
         </>
     );
 

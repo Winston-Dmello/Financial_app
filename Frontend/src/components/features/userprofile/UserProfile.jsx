@@ -1,3 +1,6 @@
+
+//Directly routed to from login and displayed only once. 
+
 import UPF from "../../forms/UserProfileForm"
 import { useNavigate } from "react-router-dom";
 import { useUser } from "../../contexts/UserContext";
