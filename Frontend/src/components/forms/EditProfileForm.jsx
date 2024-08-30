@@ -1,1 +1,0 @@
-//Instead of making another form, you can prolly use the UserProfileForm instead

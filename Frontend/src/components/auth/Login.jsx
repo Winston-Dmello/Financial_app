@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthForm from "../forms/AuthForm";
 import { useUser } from "../contexts/UserContext";
+import { POSTFUNC } from "../utils/Utils";
 
 export default function Login() {
 
@@ -11,22 +12,11 @@ export default function Login() {
 
   async function submitForm(event) {
     event.preventDefault();
-    const formElement = document.getElementById("myForm");
-    let formdata = new FormData(formElement);
-    let details = JSON.stringify(Object.fromEntries(formdata));
 
-    try {
-      const response = await fetch("http://localhost:8000/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: details,
-      });
+    const response = await POSTFUNC("myForm","login/","Login form submission");    
       if (response.status == 200) {
-        const data = await response.json();
-        let UserID = data.UserId;
-        let Username = data.Username;
+        let UserID = response.UserId;
+        let Username = response.Username;
         console.log(`UserId: ${UserID} and UserName: ${Username}`);
         setUserId(UserID);
         navigate("/user-profile");
@@ -39,10 +29,7 @@ export default function Login() {
         setAlert("Submission failed. Try again.");
         console.error("Form submission failed");
       }
-    } catch (error) {
-      console.error("An error occurred during form submission", error);
-    }
-  }
+    } 
   return (
     <>
       <AuthForm title="Login" onSubmitForm={submitForm} destination="signup" />

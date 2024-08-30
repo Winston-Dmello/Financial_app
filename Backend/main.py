@@ -30,7 +30,7 @@ async def register_user(user:User):
         UserID = await create_user(user=user)   
         await Categories.insert_one({"UserId":UserID, "categories":{}})
         await Transactions.insert_one({"UserId":UserID, "transactions":{}})
-        return Response(status_code=200)
+        return JSONResponse({"status":200})
     else:
         return Response(status_code=409) #User already exists
 
@@ -44,9 +44,7 @@ async def login_user(user:User):
             content = {"UserId":check['id'], "Username":check['Username']}
             print(check['id'])
             await Users.update_one({"id":check['id']},{"$set":{"Status":"Online"}})
-            return Response(content=json.dumps(content), status_code=200, headers={
-                'Content-Type':'application/json'
-            })
+            return JSONResponse({"UserId":check['id'], "Username":check['Username'], "status":200})
         else:
             return Response(status_code=401) #password doesn't match
             
@@ -79,7 +77,7 @@ async def add_category(categ:Category,UserID: str=Path(...)):
     if categ.category not in l:
         l[categ.category] = categ.priority
         await Categories.update_one({"UserId":UserID},{"$set":{"categories":l}})
-    return Response(status_code=200)
+    return JSONResponse({"status":200})
 
 @app.post('/{UserID}/update_category')
 async def update_category(categ: Category, UserID: str=Path(...)):
