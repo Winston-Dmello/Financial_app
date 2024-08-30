@@ -60,7 +60,7 @@ async def user_profile(user:UserProfile,UserID: str=Path(...)):
 async def edit_profile(user:UserProfile, UserID: str=Path(...)):
     await UserProfiles.delete_one({"UserId":UserID})
     await create_user_profile(UserID, user=user)
-    return Response(status_code=200)
+    return JSONResponse({"status":200})
 
 @app.get('/{UserID}/profile/')
 async def give_profile(UserID: str=Path(...)):
@@ -84,20 +84,20 @@ async def update_category(categ: Category, UserID: str=Path(...)):
     categ_holder = await Categories.find_one({"UserId":UserID})
     l = categ_holder['categories']
     if categ.category not in l:
-        return Response(status_code=410) #category doesn't exist!
+        return JSONResponse({"status":410}) #category doesn't exist!
     l[categ.category] = categ.priority
     await Categories.update_one({"UserId":UserID},{"$set":{"categories":l}})
-    return Response(status_code=200)
+    return JSONResponse({"status":200})
 
 @app.post('/{UserID}/delete_category/')
-async def delete_category(categ:str, UserID: str=Path(...)):
+async def delete_category(categ: DeleteCategory, UserID: str=Path(...)):
     categ_holder = await Categories.find_one({"UserId":UserID})
     l = categ_holder['categories']
-    if categ not in l:
-        return Response(status_code=410) #category doesn't exist
-    del l[categ]
+    if categ.category not in l:
+        return JSONResponse({"status":410}) #category doesn't exist
+    del l[categ.category]
     await Categories.update_one({"UserId":UserID},{"$set":{"categories":l}})
-    return Response(status_code=200)
+    return JSONResponse({"status":200})
 
 @app.get('/{UserID}/get_transactions/')
 async def get_transactions(UserID: str=Path(...)):

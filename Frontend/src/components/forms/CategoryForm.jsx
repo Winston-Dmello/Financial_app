@@ -14,5 +14,5 @@ export default function CategoryForm({onSubmitForm}){
                 <button type="submit">Submit</button>
             </form>
         </>
-    );
+    );  
 }

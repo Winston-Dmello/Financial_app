@@ -5,8 +5,7 @@ import Signup from './components/auth/Signup'
 import Login from './components/auth/Login'
 import UserProfile from './components/features/userprofile/UserProfile'
 import ProfilePage from './components/features/userprofile/ProfilePage'
-import AddCategory from './components/features/categories/AddCategory'
-
+import { AddCategory, DeleteCategory, UpdateCategory } from './components/features/categories/Categories'
 function App() {
 
   return (
@@ -17,7 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path='/user-profile' element={<UserProfile/>}/>
         <Route path='/profile-page' element={<ProfilePage/>}/>
-        <Route path='/category' element={<AddCategory/>}/>
+        <Route path='/category' element={<DeleteCategory/>}/>
       </Routes>
     </>
   ) 

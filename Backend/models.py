@@ -15,6 +15,9 @@ class Category(BaseModel):
     category:str
     priority:int
 
+class DeleteCategory(BaseModel):
+    category: str
+
 class Transaction(BaseModel):
     Date: str
     particulars: str
