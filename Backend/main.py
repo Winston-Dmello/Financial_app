@@ -54,7 +54,7 @@ async def user_profile(user:UserProfile,UserID: str=Path(...)):
     if check is not None:
         return Response(status_code=412) #UserProfile already exists
     await create_user_profile(UserID, user=user)
-    return Response(status_code=200)
+    return JSONResponse({"status":200})
 
 @app.post('/{UserID}/edit_profile/')
 async def edit_profile(user:UserProfile, UserID: str=Path(...)):

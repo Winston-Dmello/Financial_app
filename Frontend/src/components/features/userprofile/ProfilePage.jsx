@@ -5,19 +5,16 @@
 
 import { useUser } from "../../contexts/UserContext";
 import { useEffect, useState } from "react";
+import { GETFUNC } from "../../utils/Utils";
 
 export default function Profile(){
     const [userData, setUserData] = useState(null);
     const {userId} = useUser();
     async function getUserData(){
-        try{
-            const response = await fetch(`http://localhost:8000/${userId}/profile/`)
-            let data = await response.json();
-            setUserData(data);
-            console.log(data);
-        }catch(error){
-            console.log("Error: ", error);
-        }
+        let userUrl = `${userId}/profile/`;
+        const response = await GETFUNC(userUrl, "while fetching user profile");
+        setUserData(response);
+        console.log(response);
     }
     useEffect(()=>{
         getUserData();
@@ -38,7 +35,7 @@ export default function Profile(){
                 )}
             </div>
             <br />
-            
+                  
         </>
     );
 

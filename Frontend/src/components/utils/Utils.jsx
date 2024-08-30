@@ -21,7 +21,7 @@ async function POSTFUNC(formId, url, err){
 async function GETFUNC(url, err){
     try{
         const response = await fetch(`http://localhost:8000/${url}`);
-        return response;
+        return response.json();
     }catch(error){
         console.log(`Error: ${err}`, error);
     }
