@@ -10,7 +10,7 @@ export default function Signup() {
   async function submitForm(event) {
 
     event.preventDefault();
-    const response = await POSTFUNC("myForm","register_user/","Sign up form submission");
+    const response = await POSTFUNC("myForm","register_user/","POST","Sign up form submission");
     console.log(response);
 
     if (response.status == 200) {

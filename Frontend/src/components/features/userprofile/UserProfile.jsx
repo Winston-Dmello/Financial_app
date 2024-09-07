@@ -23,7 +23,7 @@ function UserProfile() {
 
       let userUrl = `${userId}/profile`;
 
-      const response = await POSTFUNC("myForm",userUrl,"creating user profile!");
+      const response = await POSTFUNC("myForm",userUrl,"POST","creating user profile!");
 
       if (response.status == 200) {
         console.log("You will be redirected to home page!");

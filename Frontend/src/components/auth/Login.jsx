@@ -13,7 +13,7 @@ export default function Login() {
   async function submitForm(event) {
     event.preventDefault();
 
-    const response = await POSTFUNC("myForm","login/","Login form submission");    
+    const response = await POSTFUNC("myForm","login/","POST","Login form submission");    
       if (response.status == 200) {
         let UserID = response.UserId;
         let Username = response.Username;

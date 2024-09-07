@@ -16,7 +16,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path='/user-profile' element={<UserProfile/>}/>
         <Route path='/profile-page' element={<ProfilePage/>}/>
-        <Route path='/category' element={<DeleteCategory/>}/>
+        <Route path='/category' element={<AddCategory/>}/>
       </Routes>
     </>
   ) 
