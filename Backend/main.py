@@ -12,7 +12,9 @@ from Analyse import upload_balance_sheet, pie_data, get_recent_trans, manage_dat
 from Bot_Helper.main import get_info
 
 app = FastAPI()
-origins = ["http://localhost:5173"]
+origins = ["http://localhost:5173",
+            "http://192.168.10.35:5173"   
+        ]
 
 app.add_middleware(
     CORSMiddleware,
@@ -125,11 +127,11 @@ async def add_transaction(trans, UserID: str = Path(...)):
     )
 
 
-@app.post("/{UserID}/update_transaction/")
-async def update_transaction(transID, trans: Transaction, UserID: str = Path(...)):
-    transact = await Transactions.find_one({"UserId": UserID})
-    if transID not in transact["transactions"]:
-        return Response(status_code=411)  # transaction doesn't exist
+@app.post('/{UserID}/update_transaction/')
+async def update_transaction(transID, trans: Transaction, UserID: str=Path(...)):
+    transact = await Transactions.find_one({"UserId":UserID})
+    if transID not in transact['transactions']:
+        return Response(status_code=411) #transaction doesn't exist
     transaction = transaction_maker(trans=trans)
     await Transactions.update_one(
         {"UserId": UserID}, {"$set": {f"transactions.{transID}": transaction}}

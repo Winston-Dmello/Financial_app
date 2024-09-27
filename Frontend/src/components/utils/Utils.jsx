@@ -27,12 +27,14 @@ async function GETFUNC(url, err){
     }
 }
 
-
-async function sendRequest(event, userId, endpoint, method, err){
+async function sendRequest(event, formId, userId, endpoint, method, err){
     event.preventDefault();
     let userUrl = `${userId}/${endpoint}`;
+    console.log("User Url: ",userUrl)
+    
 
-    const response = await POSTFUNC("categoryForm",userUrl, method, err);
+    const response = await POSTFUNC(formId, userUrl, method, err);
+    console.log("UserId: ",userId)
 
     switch(response.status){
         case 200:

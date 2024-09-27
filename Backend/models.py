@@ -27,6 +27,9 @@ class Transaction(BaseModel):
     notes: str
 
 class Goal(BaseModel):
+    goalName: str
     goalAmount: float
     monthsLeft: int
     
+class DeleteGoal(BaseModel):
+    goalName: str

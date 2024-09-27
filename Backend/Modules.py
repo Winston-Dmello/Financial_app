@@ -51,6 +51,7 @@ def transaction_maker(trans):
 async def insert_goal(UserID,goal: Goal):
     await Goals.insert_one({
         "UserId":UserID,
+        "GoalName": goal.goalName,
         "GoalAmount": goal.goalAmount,
         "MonthsLeft":goal.monthsLeft
     })

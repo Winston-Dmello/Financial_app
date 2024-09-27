@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function AuthForm({ title, onSubmitForm, destination }) {
+function AuthForm({ title, onSubmitForm, destination }) {  //Props 
   const navigate = useNavigate();
   return (
     <div>
@@ -23,3 +23,6 @@ function AuthForm({ title, onSubmitForm, destination }) {
 }
 
 export default AuthForm;
+
+
+

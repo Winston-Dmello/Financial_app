@@ -6,7 +6,7 @@ function AddCategory(){
     const {userId} = useUser();
     return(
         <>
-            <CategoryForm onSubmitForm={(event)=>sendRequest(event, userId, "category","POST", "occured during adding category!")} />
+            <CategoryForm onSubmitForm={(event)=>sendRequest(event,"categoryForm", userId, "category","POST", "occured during adding category!")} />
         </>
     );
 }
@@ -15,7 +15,7 @@ function UpdateCategory(){
     const {userId} = useUser();
     return(
         <>
-            <CategoryForm onSubmitForm={(event)=>sendRequest(event, userId, "category","PUT","occured during updating category!")}/>
+            <CategoryForm onSubmitForm={(event)=>sendRequest(event,"categoryForm", userId, "category","PUT","occured during updating category!")}/>
         </>
     );
 }
@@ -24,7 +24,7 @@ function DeleteCategory(){
     const {userId} = useUser();
     return(
         <>
-            <form onSubmit={(event)=>sendRequest(event, userId, "category","DELETE","occured during deleting category!")} id="categoryForm">
+            <form onSubmit={(event)=>sendRequest(event,"categoryForm", userId, "category","DELETE","occured during deleting category!")} id="categoryForm">
                 <input type="text" name="category" />
                 <button type="submit">Submit</button>
             </form>
