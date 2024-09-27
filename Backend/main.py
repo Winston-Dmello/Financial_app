@@ -35,7 +35,7 @@ async def register_user(user: User):
         await Transactions.insert_one({"UserId": UserID, "transactions": {}})
         return JSONResponse({"status": 200})
     else:
-        return Response(status_code=409)  # User already exists
+        return JSONResponse({"status":409})  # User already exists
 
 
 @app.post("/login")
@@ -52,7 +52,7 @@ async def login_user(user: User):
                 {"UserId": check["id"], "Username": check["Username"], "status": 200}
             )
         else:
-            return Response(status_code=401)  # password doesn't match
+            return JSONResponse({"status":401})  # password doesn't match
 
 
 @app.post("/{UserID}/profile/")
@@ -151,9 +151,21 @@ async def delete_transaction(transID, UserID: str = Path(...)):
     )
 
 
-@app.post("/{UserID}/goal_setter/")
+@app.post("/{UserID}/goal/")
 async def goal_setter(goal: Goal, UserID: str = Path(...)):
     await insert_goal(UserID, goal=goal)
+
+@app.get("/{UserID}/goal/")
+async def goal_getter(UserID: str=Path(...)):
+    pass
+
+@app.put("/{UserID}/goal/")
+async def goal_updater(goal: Goal, UserID: str=Path(...)):
+    pass
+
+@app.delete("/{UserID}/goal/")
+async def goal_deleter(goalName: DeleteGoal, UserID: str=Path(...)):
+    pass
 
 
 @app.post("/{UserID}/upload_file/")
