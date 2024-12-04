@@ -73,7 +73,7 @@ async def edit_profile(user: UserProfile, UserID: str = Path(...)):
 
 @app.get("/{UserID}/profile/")
 async def give_profile(UserID: str = Path(...)):
-    to_be_returned = await UserProfiles.find_one({"UserId": UserID}, {"_id": 0})
+    to_be_returned = await UserProfiles.find_one({"UserId": UserID}, {"_id": 0, "UserId":0})
     return JSONResponse(content=to_be_returned)
 
 

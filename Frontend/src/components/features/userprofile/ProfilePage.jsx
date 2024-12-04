@@ -6,9 +6,11 @@
 import { useUser } from "../../contexts/UserContext";
 import { useEffect, useState } from "react";
 import { GETFUNC } from "../../utils/Utils";
+import UPF from "../../forms/UserProfileForm";
 
 export default function Profile(){
     const [userData, setUserData] = useState(null);
+    const [editable, setEditable] = useState(false);
     const {userId} = useUser();
     async function getUserData(){
         let userUrl = `${userId}/profile/`;
@@ -20,16 +22,25 @@ export default function Profile(){
         getUserData();
     }, []);
 
+    const handleEdit = () => {
+        setEditable(!editable);
+    }
+    /* Need to make the edit profile api call */
     return(
         <>
             <div>
                 {userData ? (
-                    Object.entries(userData).map(([key, value]) => (
-                        <span key={key}>
-                            <strong>{key}: </strong> {value}
-                            <br />
-                        </span> 
-                    ))
+                    editable ? (
+                        <form id="profileForm" onSubmit={handleEdit}>
+                            <UPF data={userData} check={true} editable={true}/>
+                            <input type="submit"/>
+                        </form>
+                    ) :(
+                        <form id="profileForm">
+                            <UPF data={userData} check={true} editable={false}/>
+                            <button onClick={handleEdit}>Edit</button>
+                        </form>
+                    )
                 ) : (
                     <p>Loading...</p>
                 )}

@@ -9,7 +9,7 @@ import { AddCategory, DeleteCategory, UpdateCategory } from './components/featur
 import { AddGoal, UpdateGoal, DeleteGoal } from './components/features/goals/Goals'
 
 function App() {
-
+  /*Routes are temporarily rendered here*/
   return (
     <>
       <Routes>

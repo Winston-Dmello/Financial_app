@@ -1,28 +1,37 @@
 import { useUser } from "../contexts/UserContext";  
 
-function UPF({ data, OnChange }) {
-    let i = 0;
-    const { userId } = useUser();
-    console.log(userId);
+function UPF({ data, OnChange, check, editable }) {
+    /* If check is false, UserProfile Page is rendered (which needs no data whatsoever)
+       If check is true, Profile Page is loaded*/
     return (
         <>
-        {Object.entries(data).map(([key, valueObj]) => (
-            <>
-            <div key={key}>
-                <label htmlFor={key}>{key.replace(/_/g, "").toUpperCase()}</label>
-                <input
-                type="text"
-                name={key}
-                id={key}
-                placeholder={valueObj.value}
-                onChange={OnChange}
-                required
-                />
-            </div>
-            </>
-        ))}
+        {editable ? (
+            Object.entries(data).map(([key, valueObj]) => (
+                  <div key={key}>
+                    <label htmlFor={key}>{key.replace(/_/g, "").toUpperCase()}</label>
+                    <input
+                    type="text"
+                    name={key}
+                    onChange={OnChange}
+                    required
+                    defaultValue={check ? valueObj : ""}
+                    />
+                  </div>
+            ))
+        ) : (Object.entries(data).map(([key, valueObj]) => (
+                  <div key={key}>
+                    <label htmlFor={key}>{key.replace(/_/g, "").toUpperCase()}</label>
+                    <input
+                    type="text"
+                    name={key}
+                    onChange={OnChange}
+                    required
+                    defaultValue={check ? valueObj : ""}
+                    disabled
+                    />
+                  </div>
+            )))}
         </>
     );
 }
 export default UPF;
-  

@@ -37,7 +37,7 @@ function UserProfile() {
   return (
     <>
       <form id="myForm" onSubmit={submitForm}>
-        <UPF data={data} OnChange={handleInputChange} />
+        <UPF data={data} OnChange={handleInputChange} check={false} editable={true}/>
         <button type="submit">Submit</button>
       </form>
     </>

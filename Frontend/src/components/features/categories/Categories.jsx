@@ -2,7 +2,7 @@ import { useUser } from "../../contexts/UserContext";
 import { sendRequest } from "../../utils/Utils";
 import CategoryForm from "../../forms/CategoryForm";
 
-function AddCategory(){
+const AddCategory = () => {
     const {userId} = useUser();
     return(
         <>
@@ -11,7 +11,7 @@ function AddCategory(){
     );
 }
 
-function UpdateCategory(){
+const UpdateCategory = () => {
     const {userId} = useUser();
     return(
         <>
@@ -20,7 +20,7 @@ function UpdateCategory(){
     );
 }
 
-function DeleteCategory(){
+const DeleteCategory = () => {
     const {userId} = useUser();
     return(
         <>
@@ -30,6 +30,10 @@ function DeleteCategory(){
             </form>
         </>
     );
+}
+
+const Categories = () => { /*The actual categories page*/
+
 }
 
 export {AddCategory, UpdateCategory, DeleteCategory};
