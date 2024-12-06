@@ -3,6 +3,7 @@ async function POSTFUNC(formId, url, method, err){
     const formElement = document.getElementById(formId);
     let formData = new FormData(formElement);
     let details = JSON.stringify(Object.fromEntries(formData));
+    console.log(details);
 
     try{
         const response = await fetch(`http://localhost:8000/${url}`,{

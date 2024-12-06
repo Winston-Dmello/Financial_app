@@ -31,8 +31,8 @@ async def register_user(user: User):
     check = await search_user_by_username(user.username)
     if check == None:
         UserID = await create_user(user=user)
-        await Categories.insert_one({"UserId": UserID, "categories": {}})
-        await Transactions.insert_one({"UserId": UserID, "transactions": {}})
+        await Categories.insert_one({"userId": UserID, "categories": {}})
+        await Transactions.insert_one({"userId": UserID, "transactions": {}})
         return JSONResponse({"status": 200})
     else:
         return JSONResponse({"status":409})  # User already exists
@@ -66,50 +66,57 @@ async def user_profile(user: UserProfile, UserID: str = Path(...)):
 
 @app.post("/{UserID}/edit_profile/")
 async def edit_profile(user: UserProfile, UserID: str = Path(...)):
-    await UserProfiles.delete_one({"UserId": UserID})
+    await UserProfiles.delete_one({"userId": UserID})
     await create_user_profile(UserID, user=user)
     return JSONResponse({"status": 200})
 
 
 @app.get("/{UserID}/profile/")
 async def give_profile(UserID: str = Path(...)):
-    to_be_returned = await UserProfiles.find_one({"UserId": UserID}, {"_id": 0, "UserId":0})
+    to_be_returned = await UserProfiles.find_one({"userId": UserID}, {"_id": 0, "userId":0})
     return JSONResponse(content=to_be_returned)
 
 
-@app.post("/{UserID}/add_category/")
+@app.post("/{UserID}/category")
 async def add_category(categ: Category, UserID: str = Path(...)):
     """
     l.append({categ.category:categ.priority})
     await Categories.update_one({"UserId":UserID},{"$set":{"categories":l}})"""
-    categ_holder = await Categories.find_one({"UserId": UserID})
+    print(categ)
+    categ_holder = await Categories.find_one({"userId": UserID})
     l = categ_holder["categories"]
     if categ.category not in l:
         l[categ.category] = categ.priority
-        await Categories.update_one({"UserId": UserID}, {"$set": {"categories": l}})
+        await Categories.update_one({"userId": UserID}, {"$set": {"categories": l}})
     return JSONResponse({"status": 200})
 
 
-@app.post("/{UserID}/update_category")
+@app.put("/{UserID}/category")
 async def update_category(categ: Category, UserID: str = Path(...)):
-    categ_holder = await Categories.find_one({"UserId": UserID})
+    categ_holder = await Categories.find_one({"userId": UserID})
     l = categ_holder["categories"]
     if categ.category not in l:
         return JSONResponse({"status": 410})  # category doesn't exist!
     l[categ.category] = categ.priority
-    await Categories.update_one({"UserId": UserID}, {"$set": {"categories": l}})
+    await Categories.update_one({"userId": UserID}, {"$set": {"categories": l}})
     return JSONResponse({"status": 200})
 
 
-@app.post("/{UserID}/delete_category/")
+@app.delete("/{UserID}/category/")
 async def delete_category(categ: DeleteCategory, UserID: str = Path(...)):
-    categ_holder = await Categories.find_one({"UserId": UserID})
+    categ_holder = await Categories.find_one({"userId": UserID})
     l = categ_holder["categories"]
     if categ.category not in l:
         return JSONResponse({"status": 410})  # category doesn't exist
     del l[categ.category]
-    await Categories.update_one({"UserId": UserID}, {"$set": {"categories": l}})
+    await Categories.update_one({"userId": UserID}, {"$set": {"categories": l}})
     return JSONResponse({"status": 200})
+
+@app.get("/{UserID}/category")
+async def get_categories(UserID: str = Path(...)):
+    categ_holder = await Categories.find_one({"userId": UserID})
+    l = categ_holder["categories"]
+    return JSONResponse(l)
 
 
 @app.get("/{UserID}/get_transactions/")

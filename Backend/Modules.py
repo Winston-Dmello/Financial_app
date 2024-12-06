@@ -24,13 +24,13 @@ async def create_user(user: User):
 
 async def create_user_profile(UserID, user: UserProfile):
     await UserProfiles.insert_one({
-        "UserId":UserID,
-        "Name":user.name,
-        "Age":user.age,
-        "Ph_no":user.ph_no,
-        "Bank":user.bank,
-        "Ifsc":user.ifsc,
-        "Balance":user.balance
+        "userId":UserID,
+        "name":user.name,
+        "age":user.age,
+        "ph_no":user.ph_no,
+        "bank":user.bank,
+        "ifsc":user.ifsc,
+        "balance":user.balance
     })
 
 
