@@ -75,8 +75,6 @@ const Categories = () => {
   async function getCategories() {
     const data = await GETFUNC(`${userId}/category`);
     setCategories(data);
-    console.log("Data: ", data);
-    console.log("Categories: ", categories);
   }
   useEffect(() => {
     getCategories();
@@ -105,7 +103,7 @@ const Categories = () => {
         ) : selector == "del" ? (
           <DeleteCategory userId={userId} update={getCategories} />
         ) : (
-          <p>Nothing to see here!</p>
+          <p>What would you like to do?</p>
         )}
       </div>
     </>

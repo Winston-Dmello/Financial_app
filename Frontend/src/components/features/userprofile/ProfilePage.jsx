@@ -16,7 +16,6 @@ export default function Profile() {
     let userUrl = `${userId}/profile/`;
     const response = await GETFUNC(userUrl, "while fetching user profile");
     setUserData(response);
-    console.log(response);
   }
   async function editProfile(event) {
     //event, formId, userId, endpoint, method, err

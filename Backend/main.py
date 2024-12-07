@@ -102,7 +102,7 @@ async def update_category(categ: Category, UserID: str = Path(...)):
     return JSONResponse({"status": 200})
 
 
-@app.delete("/{UserID}/category/")
+@app.delete("/{UserID}/category")
 async def delete_category(categ: DeleteCategory, UserID: str = Path(...)):
     categ_holder = await Categories.find_one({"userId": UserID})
     l = categ_holder["categories"]
